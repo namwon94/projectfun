@@ -5,3 +5,5 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
+rust_decimal = "1.36"
+rust_decimal_macros = "1.36"

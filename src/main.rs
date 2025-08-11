@@ -1,6 +1,9 @@
 use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
+use rust_decimal::Decimal;
+use rust_decimal_macros::dec;
+use std::str::FromStr;
 
 /*
 turning_p[1]을 비교하는 이유
@@ -9,7 +12,7 @@ turning_p[1]을 비교하는 이유
 */
 fn main() {
     let turning_p: Vec<String> = std::env::args().collect();
-    let turning_index = ["guessing", "var", "arr", "fun", "control"];
+    let turning_index = ["guessing", "var", "arr", "fun", "control", "scope", "reference", "first_word", "chg_f_c"];
     if turning_p.len() > 1 && turning_p[1] == "guessing" {
         guessing();
     }else if turning_p.len() > 1 && turning_p[1] == "var" {
@@ -26,9 +29,19 @@ fn main() {
         scope();
     }else if turning_p.len() > 1 && turning_p[1] == "reference" {
         reference();
+    }else if turning_p.len() > 1 && turning_p[1] == "first_word" {
+        let mut s = String::from("hello world");
+        let word = first_word(&s);
+
+        s.clear(); // 이 코드는 String을 비워서 ""으로 만든다.
+
+        //여기서 word에는 여전히 5가 들어있지만, 이 5를 의미있게 쓸 수 있는 문자열은 더 이상 없다. word는 이제 전혀 유효하지 않다.
+        println!("word : {word}, s : {s}");
     }
     
-    
+    else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
+        chg_f_c();
+    }
     else {
         println!("Please input argument : {:?}", turning_index);
     }
@@ -130,6 +143,68 @@ fn control() {
     }
 }
 
+fn chg_f_c() {
+    println!("Which one do you want to change? Celsius or Fahrenheit");
+    println!("Please input the word that you want to change");
+
+    const D32: Decimal = dec!(32.0);
+    const D5: Decimal = dec!(5.0);
+    const D9: Decimal = dec!(9.0);
+    let mut tem = String::new();
+
+    io::stdin().read_line(&mut tem).expect("Failed to read line");
+
+    if tem.trim() == "Celsius" {
+        let mut cel = String::new();
+        let fah: Decimal;
+
+        loop {
+            cel.clear();
+            println!("Please input Celsius");
+
+            io::stdin().read_line(&mut cel).expect("Failed to read line");
+
+            let cel: Decimal = match Decimal::from_str(cel.trim()) {
+                Ok(num) => num,
+                Err(_) => {
+                    println!("you have to input number. : {cel}"); 
+                    continue
+                }
+            };
+            fah = (cel*D9/D5+D32).round_dp(1);
+            break;
+        }
+        
+        println!("The Fahrenheit is {fah}°F");
+    }else if tem.trim() == "Fahrenheit" {
+        let mut fah = String::new();
+        let cel: Decimal;
+
+        loop {
+            fah.clear();
+            println!("Please input Fahrenheit");
+
+            io::stdin().read_line(&mut fah).expect("Failed to read line");
+
+            let fah: Decimal = match Decimal::from_str(fah.trim()) {
+                Ok(num) => num,
+                Err(_) => {
+                    println!("you have to input number.");
+                    continue
+                }
+            };
+            cel = ((fah-D32)*D5/D9).round_dp(1);
+            break;
+        }
+
+        println!("The Celsius is {cel}°C");
+
+    }else{
+        println!("You input the wrong word.")
+    }
+
+}
+
 /*
 화씨 온도와 섭씨 온도 간 변환하기
 n번째 피보나치 수 생성하기
@@ -199,3 +274,19 @@ fn reference() {
 fn calculate_length(s: &String) -> usize { // s는 String의 참조자이다.
     s.len()
 }// 여기서 s가 스코프 밖으로 벗어난다. 하지만 참조하는 것을 소유하고 있진 않으므로, 버려지지 않는다.
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    /*
+    iter() : 컬렉션의 각 요소를 반환한다.
+    enumerate() : iter의 각 결과값을 튜플로 감싸 반환한다. / 반환하는 튜플은 첫번째 요소가 인덱스, 두번째 요소가 해당 요소의 참조자로 이루어짐
+     */
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
+    s.len()
+}
