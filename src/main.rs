@@ -37,11 +37,16 @@ fn main() {
 
         //여기서 word에는 여전히 5가 들어있지만, 이 5를 의미있게 쓸 수 있는 문자열은 더 이상 없다. word는 이제 전혀 유효하지 않다.
         println!("word : {word}, s : {s}");
+    }else if turning_p.len() > 1 && turning_p[1] == "rectangles" {
+        rectangles();
     }
     
     else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
         chg_f_c();
     }
+    /*else if turning_p.len() > 1 && turning_p[1] == "struct_user" {
+        user();
+    }*/
     else {
         println!("Please input argument : {:?}", turning_index);
     }
@@ -206,7 +211,7 @@ fn chg_f_c() {
 }
 
 /*
-화씨 온도와 섭씨 온도 간 변환하기
+화씨 온도와 섭씨 온도 간 변환하기 (clear)
 n번째 피보나치 수 생성하기
 크리스마스 캐롤 ‘The Twelve Days of Christmas’ 노래의 반복성을 활용하여 가사 출력해보기
 */
@@ -290,3 +295,64 @@ fn first_word(s: &String) -> usize {
 
     s.len()
 }
+
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32
+}
+
+fn rectangles() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!("rect1_:? is {:?}", rect1);
+    println!("rect1_:#? is {:#?}", rect1);
+
+    println!(
+        "The area of the rectangle is {} square pixels",
+        area(&rect1)
+    );
+}
+
+fn area(rectangle: &Rectangle) -> u32 {
+    rectangle.width * rectangle.height
+}
+
+/*
+struct User {
+    active: bool,
+    username: String,
+    email: String,
+    sign_in_count: u64
+}
+
+fn user() {
+    let mut user1 = User {
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1
+    };
+
+    let user2 = User {
+        email: String::from("another@example.com"),
+        ..user1 // user1 과 동일한 값은 이런식으로 ..user1으로 표기하는 방벙이 있다.
+    };
+    // user2를 생선한 이후에는 user1을 더 이상 사용할 수 없다 -> user1의 username 필드의 String이 user2로 이동되기 때문이다. -> username은 힙에 저장된 데이터 이기 때문이다.
+
+    user1.email = String::from("anotheremail@example.com");
+}
+// 필드 초기화 축약법(field init shorthand) : 매개변수명과 구조체 필드명이 동일한 경우 반복해서 작성하는 대신 작성을 안한다.
+
+fn build_user(email: String, username: String) -> User {
+    User {
+        active: true,
+        username,
+        email,
+        sign_in_count:1,
+    }
+}
+*/
