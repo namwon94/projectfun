@@ -1,9 +1,15 @@
-use std::io;
+use std::{io, process};
 use std::cmp::Ordering;
 use rand::Rng;
 use rust_decimal::Decimal;
 use rust_decimal_macros::dec;
 use std::str::FromStr;
+
+/*
+화씨 온도와 섭씨 온도 간 변환하기 (clear)
+n번째 피보나치 수 생성하기
+크리스마스 캐롤 ‘The Twelve Days of Christmas’ 노래의 반복성을 활용하여 가사 출력해보기
+*/
 
 /*
 turning_p[1]을 비교하는 이유
@@ -43,6 +49,45 @@ fn main() {
     
     else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
         chg_f_c();
+    }else if turning_p.len() > 1 && turning_p[1] == "fibonacci" {
+        println!("Please input a number");
+
+        let mut number = String::new();
+
+        io::stdin().read_line(&mut number).expect("Faile to read line");
+
+        let number:u32 = match number.trim().parse(){
+        Ok(num) => num,
+        Err(_) => {
+                println!("you are not input number");
+                process::exit(1)
+            }
+        };
+
+        for i in 0..number {
+            println!("fibonacci({}) = {}", i, fibonacci(i));
+        }
+
+    }else if turning_p.len() > 1 && turning_p[1] == "fibonacci_memo" {
+        println!("Please input a number");
+
+        let mut number = String::new();
+
+        io::stdin().read_line(&mut number).expect("Faile to read line");
+
+        let number:usize = match number.trim().parse(){
+        Ok(num) => num,
+        Err(_) => {
+            println!("you are not input number");
+            process::exit(1)
+            }
+        };
+
+        let mut memo = vec![0; number+1];
+
+        for i in 0..number {
+            println!("fibonacci({}) = {}", i, fibonacci_memo(i, &mut memo));
+        }
     }
     /*else if turning_p.len() > 1 && turning_p[1] == "struct_user" {
         user();
@@ -148,6 +193,7 @@ fn control() {
     }
 }
 
+//화씨, 섭씨 온도 변환
 fn chg_f_c() {
     println!("Which one do you want to change? Celsius or Fahrenheit");
     println!("Please input the word that you want to change");
@@ -210,11 +256,45 @@ fn chg_f_c() {
 
 }
 
-/*
-화씨 온도와 섭씨 온도 간 변환하기 (clear)
-n번째 피보나치 수 생성하기
-크리스마스 캐롤 ‘The Twelve Days of Christmas’ 노래의 반복성을 활용하여 가사 출력해보기
-*/
+//재귀함수로 이용한 피보나치 수열
+fn fibonacci(num: u32) -> u32 {
+    if num == 0 {
+        return 0;
+    } else if num == 1 {
+        return 1;
+    }
+
+    let mut a = 0;
+    let mut b = 1;
+    let mut c = 0;
+
+    //_의 의미 : 루프변수를 사용하지 않겠다. 여기서는 'num'의 값을 변수로 사용하지 않는다.
+    for _ in 2..=num {
+        c = a + b;
+        a = b;
+        b = c;
+    }
+
+    c
+}
+
+//동적계획법을 이용한 피보나치 수열
+fn fibonacci_memo(num:usize, memo: &mut Vec<u64>) -> u64 {
+    if num == 0 {
+        return 0
+    }else if num == 1 {
+        return 1
+    }
+
+    if memo[num] != 0 {
+        //이미 계산된 값이 있으면 반환
+        return memo[num]
+    }
+
+    //이전 두 값을 재귀 호출로 계산하고 저장
+    memo[num] = fibonacci_memo(num-1, memo) + fibonacci_memo(num-2, memo);
+    memo[num]
+}
 
 fn scope() {
     /*
@@ -256,7 +336,7 @@ fn scope() {
     정수형 등 컴파일 타임에 크기가 고정되는 타입은 모두 스택에 저장되기 때문에 궅이 y를 생성하고 x를 무효화할 필요가 없다.
     */
 } //이 스코프가 종료되고, hello는 더 이상 유효하지 않는다.
-// 러스트는 변ㅅ가 스코프 밖으로 벗어나면 drop이라는 특별한 함수를 호출한다. 이 함수는 해당 타입을 개발한 개발자가 직접 메모리 해제 코드를 작성해 넣을 수 있게 되어있고,
+// 러스트는 변수가 스코프 밖으로 벗어나면 drop이라는 특별한 함수를 호출한다. 이 함수는 해당 타입을 개발한 개발자가 직접 메모리 해제 코드를 작성해 넣을 수 있게 되어있고,
 // 위의 경우 String 개발자가 작성한 메모리 해제 코드가 실행된다. (drop은 닫힌 중괄호가 나타나는 지점에서 자동으로 호출)
 
 
