@@ -491,7 +491,8 @@ fn enums() {
         address: String::from("::1"),
     };
 
-    println!("hoem : {:?}, loopback : {:?}", home, loopback);
+    //address는 String - String은 Display 트레이트 구현되어있음
+    println!("hoem.kind : {:?}, home.address : {}, loopback.kind : {:?}, loopback.address : {}", home.kind, home.address, loopback.kind, loopback.address);
 }
 
 /*
