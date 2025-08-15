@@ -231,7 +231,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "projectFun"
+name = "projectfun"
 version = "0.1.0"
 dependencies = [
  "rand",
