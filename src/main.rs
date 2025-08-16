@@ -1,7 +1,7 @@
 use std::{io, process};
 use projectfun::routes::{
     guessing, var, arr, fun, control, chg_f_c, fibonacci, fibonacci_memo, scope, reference,
-    first_word, rectangles, enums,
+    first_word, rectangles, enums, matchs,
 };
 
 /*
@@ -47,6 +47,8 @@ fn main() {
         rectangles();
     }else if turning_p.len() > 1 && turning_p[1] == "enums" {
         enums();
+    }else if turning_p.len() > 1 && turning_p[1] == "matchs" {
+        matchs();
     }
     
     else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
