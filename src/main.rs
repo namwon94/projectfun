@@ -1,7 +1,7 @@
 use std::{io, process};
 use projectfun::routes::{
-    guessing, var, arr, fun, control, chg_f_c, fibonacci, fibonacci_memo, scope, reference,
-    first_word, rectangles, enums, matchs, vecs, strings, hashmaps
+    arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, guessing, 
+    matchs, rectangles, reference, scope, strings, var, vecs, hashmaps, vec_study, hash_study,
 };
 
 /*
@@ -10,7 +10,7 @@ use projectfun::routes::{
 3. 크리스마스 캐롤 ‘The Twelve Days of Christmas’ 노래의 반복성을 활용하여 가사 출력해보기
 */
 /*
-1. 정수 리스트가 주어졌을 때, 벡터를 이용하여 이 리스트의 중간 값(meduan, 정렬했을 때 가장 가운데 위치한 값), 그리고 최빈값(mode, 가장 많이 발생한 값; 해시맵이 여기서 도움이 된다) 반환하기.
+1. 정수 리스트가 주어졌을 때, 벡터를 이용하여 이 리스트의 중간 값(meduan, 정렬했을 때 가장 가운데 위치한 값), 그리고 최빈값(mode, 가장 많이 발생한 값; 해시맵이 여기서 도움이 된다) 반환하기. (clear)
 2. 문자열을 피그 라틴(pig Latin)으로 변경해 보세여. 각 단어의 첫번째 자음은 단어의 끝으로 이동하고 'ay'를 붙이므로, 'first'는 'irst-fay'가 된다.
     모음으로 시작하는 단어는 대신 끝에 'hay'를 붙인다.('apple' -> 'apple-hay'). UTF-8 인코딩에 대한 세부 사항을 명심하기.
 3. 해시맵과 벡터를 이용하여 사용자가 회사 부서의 직원 이름을 추가할 수 있도록 하는 텍스트 인터페이스를 만들어 보세요.
@@ -26,7 +26,7 @@ fn main() {
     let turning_p: Vec<String> = std::env::args().collect();
     let turning_index 
         = ["guessing", "var", "arr", "fun", "control", "scope", "reference", "first_word", "chg_f_c", "rectangles", "fibonacci", "fibonacci_memo", "enums",
-           "matchs", "vecs", "strings"];
+           "matchs", "vecs", "strings", "vec_study", "hash_study"];
     if turning_p.len() > 1 && turning_p[1] == "guessing" {
         guessing();
     }else if turning_p.len() > 1 && turning_p[1] == "var" {
@@ -96,7 +96,7 @@ fn main() {
         let number:usize = match number.trim().parse(){
         Ok(num) => num,
         Err(_) => {
-            println!("you are not input number");
+            println!("You are not input number");
             process::exit(1)
             }
         };
@@ -106,6 +106,37 @@ fn main() {
         for i in 0..number {
             println!("fibonacci({}) = {}", i, fibonacci_memo(i, &mut memo));
         }
+    }else if turning_p.len() > 1 && turning_p[1] == "vec_study" {
+        println!("Please input your list length");
+
+        let mut number = String::new();
+
+        io::stdin().read_line(&mut number).expect("Faile to read line");
+
+        //let number:Decimal = match Decimal::from_str(number.trim()) {
+        let number:usize = match number.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("You are not input number");
+                process::exit(1)
+            }
+        };
+        println!("The meduan is {}", vec_study(number));
+    }else if turning_p.len() > 1 && turning_p[1] == "hash_study" {
+        println!("Please input your list length");
+
+        let mut number = String::new();
+
+        io::stdin().read_line(&mut number).expect("Faile to read line");
+
+        let number:usize = match number.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Tou are not input number");
+                process::exit(1)
+            }
+        };
+        hash_study(number);
     }
     /*else if turning_p.len() > 1 && turning_p[1] == "struct_user" {
         user();
