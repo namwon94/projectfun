@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use rand::Rng;
 
-//정수 리스트가 주어졌을 때, 벡터를 이용하여 이 리스트의 중간 값(meduan, 정렬했을 때 가장 가운데 위치한 값), 그리고 최빈값(mode, 가장 많이 발생한 값; 해시맵이 여기서 도움이 된다) 반환하기.
+//정수 리스트가 주어졌을 때, 벡터를 이용하여 이 리스트의 중간 값(meduan, 정렬했을 때 가장 가운데 위치한 값) 반하하기
 pub fn vec_study(num: usize) -> f64 {
     let length: usize = num;
     let mut rng = rand::thread_rng();
@@ -19,6 +19,7 @@ pub fn vec_study(num: usize) -> f64 {
     meduan
 }
 
+//최빈값(mode, 가장 많이 발생한 값; 해시맵이 여기서 도움이 된다) 반환하기.
 pub fn hash_study(num: usize) {
     let length: usize = num;
     let mut rng = rand::thread_rng();
@@ -45,15 +46,3 @@ pub fn hash_study(num: usize) {
 
     println!("The mode is {mode} and count is {max_count}");
 }
-
-
-/*
-    let mut map2 = HashMap::new();
-
-    for word in text.split_whitespace() {
-        let count = map2.entry(word).or_insert(0);
-        *count += 1;
-    }
-
-    println!("{:?}", map2);
-*/

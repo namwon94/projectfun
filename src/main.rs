@@ -1,7 +1,7 @@
 use std::{io, process};
 use projectfun::routes::{
     arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, guessing, 
-    matchs, rectangles, reference, scope, strings, var, vecs, hashmaps, vec_study, hash_study,
+    matchs, rectangles, reference, scope, strings, var, vecs, hashmaps, vec_study, hash_study, pig_latin,
 };
 
 /*
@@ -137,6 +137,24 @@ fn main() {
             }
         };
         hash_study(number);
+    }else if turning_p.len() > 1 && turning_p[1] == "pig_latin" {
+        println!("Please input word");
+
+        let mut word = String::new();
+
+        io::stdin().read_line(&mut word).expect("Faile to read line");
+
+        if let Some(first_word) = word.chars().next() {
+            if first_word.is_numeric() {
+                println!("You are not input word.");
+                process::exit(1);
+            }else{
+                pig_latin(first_word, word);
+            }
+        }else {
+            println!("You are not input word.");
+            process::exit(1);
+        }
     }
     /*else if turning_p.len() > 1 && turning_p[1] == "struct_user" {
         user();
