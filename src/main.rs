@@ -2,6 +2,7 @@ use std::{io, process};
 use projectfun::routes::{
     arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, guessing, 
     matchs, rectangles, reference, scope, strings, var, vecs, hashmaps, vec_study, hash_study, pig_latin,
+    panic_result,
 };
 
 /*
@@ -12,7 +13,7 @@ use projectfun::routes::{
 /*
 1. 정수 리스트가 주어졌을 때, 벡터를 이용하여 이 리스트의 중간 값(meduan, 정렬했을 때 가장 가운데 위치한 값), 그리고 최빈값(mode, 가장 많이 발생한 값; 해시맵이 여기서 도움이 된다) 반환하기. (clear)
 2. 문자열을 피그 라틴(pig Latin)으로 변경해 보세여. 각 단어의 첫번째 자음은 단어의 끝으로 이동하고 'ay'를 붙이므로, 'first'는 'irst-fay'가 된다.
-    모음으로 시작하는 단어는 대신 끝에 'hay'를 붙인다.('apple' -> 'apple-hay'). UTF-8 인코딩에 대한 세부 사항을 명심하기.
+    모음으로 시작하는 단어는 대신 끝에 'hay'를 붙인다.('apple' -> 'apple-hay'). UTF-8 인코딩에 대한 세부 사항을 명심하기. (clear)
 3. 해시맵과 벡터를 이용하여 사용자가 회사 부서의 직원 이름을 추가할 수 있도록 하는 텍스트 인터페이스를 만들어 보세요.
     예를들어 'Add Sally to Engineering' 이나 'Add Amir to Sales' 같은 식으로요. 그 후 사용자가 모든 사람에 대해 알파벳 순으로 정렬된 목록이나 부서별 모든 사람에 대한 목록을 조회할 수 있도록 하기.
 */
@@ -63,6 +64,8 @@ fn main() {
         strings();
     }else if turning_p.len() > 1 && turning_p[1] == "hashmaps" {
         hashmaps();
+    }else if turning_p.len() > 1 && turning_p[1] == "panic_result" {
+        let _patinc_def = panic_result();
     }
     
     else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
