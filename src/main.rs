@@ -2,7 +2,7 @@ use std::{io, process};
 use projectfun::routes::{
     arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, guessing, 
     matchs, rectangles, reference, scope, strings, var, vecs, hashmaps, vec_study, hash_study, pig_latin,
-    panic_result,
+    panic_result, gen_largest_char, gen_largest_i32, gen_largest, gen_method_def,
 };
 
 /*
@@ -27,7 +27,7 @@ fn main() {
     let turning_p: Vec<String> = std::env::args().collect();
     let turning_index 
         = ["guessing", "var", "arr", "fun", "control", "scope", "reference", "first_word", "chg_f_c", "rectangles", "fibonacci", "fibonacci_memo", "enums",
-           "matchs", "vecs", "strings", "vec_study", "hash_study"];
+           "matchs", "vecs", "strings", "vec_study", "hash_study", "generic_def", ];
     if turning_p.len() > 1 && turning_p[1] == "guessing" {
         guessing();
     }else if turning_p.len() > 1 && turning_p[1] == "var" {
@@ -66,7 +66,27 @@ fn main() {
         hashmaps();
     }else if turning_p.len() > 1 && turning_p[1] == "panic_result" {
         let _patinc_def = panic_result();
+    }else if turning_p.len() > 1 && turning_p[1] == "generic_def" {
+        let number_list = vec![23, 50, 25, 100];
+        let result = gen_largest_i32(&number_list);
+        let result2 = gen_largest(&number_list);
+
+        println!("The largest number is {}", result);
+        println!("The largest2 number is {}", result2);
+
+        let char_list = vec!['y', 'm', 'a', 'q'];
+        let result = gen_largest_char(&char_list);
+        let result2 = gen_largest(&char_list);
+
+        println!("The largest char is {}", result);
+        println!("The largest2 char is {}", result2);
+
+        gen_method_def();
     }
+
+
+
+
     
     else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
         chg_f_c();
