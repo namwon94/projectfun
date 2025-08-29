@@ -1,8 +1,8 @@
 use std::{io, process};
 use projectfun::routes::{
-    arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, guessing, 
-    matchs, rectangles, reference, scope, strings, var, vecs, hashmaps, vec_study, hash_study, pig_latin,
-    panic_result, gen_largest_char, gen_largest_i32, gen_largest, gen_method_def,
+    arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, gen_largest, 
+    gen_largest_char, gen_largest_i32, gen_method_def, guessing, hash_study, hashmaps, lifetime, 
+    matchs, panic_result, pig_latin, rectangles, reference, scope, strings, var, vec_study, vecs 
 };
 
 /*
@@ -82,6 +82,8 @@ fn main() {
         println!("The largest2 char is {}", result2);
 
         gen_method_def();
+    }else if turning_p.len() > 1 && turning_p[1] == "lifetime" {
+        lifetime();
     }
 
 
