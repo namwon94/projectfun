@@ -1,6 +1,6 @@
 use std::{io, process};
 use projectfun::routes::{
-    arr, chg_f_c, control, enums, fibonacci, fibonacci_memo, first_word, fun, 
+    arr, chg_f_c, control, closure, enums, fibonacci, fibonacci_memo, first_word, fun, 
     gen_largest, gen_largest_char, gen_largest_i32, gen_method_def, guessing, 
     hash_study, hashmaps, lifetime, matchs, minigrep, panic_result, pig_latin, 
     rectangles, reference, scope, strings, var, vec_study, vecs
@@ -87,6 +87,8 @@ fn main() {
         lifetime();
     }else if turning_p.len() > 1 && turning_p[1] == "minigrep" {
         minigrep();
+    }else if turning_p.len() > 1 && turning_p[1] == "closure" {
+        closure();
     }
 
 
