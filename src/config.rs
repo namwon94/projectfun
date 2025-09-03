@@ -1,9 +1,11 @@
 use std::fs;
 use std::error::Error;
+use std::env;
 
 pub struct Config {
     pub query: String,
     pub file_path: String,
+    pub ignore_case: bool,
 }
 
 /*
@@ -14,16 +16,32 @@ String 데이터를 관리하는 방법 중 가장 쉬운방법은 clone 메서�
 
 build 한수 성공 시 Config, 에러가 난 경우 &'static str을 갖는 Result를 반환
     -> 에러값은 언제나 'static 라이프타임을 갖는 문자열 리터럴이다.
+
+20250903 수정 : ch13 - 반복자를 사용하여 clone 제거함. clone을 제거하는 이유는 위에 설명 했듯이 다소 비효율적이기 때문이다. 
+
+env::args 함수에 대한 표준 라이브러리 문서에는 반환되는 반복자의 타입이 std::env:Args이며, 이 타입은 Iterator 트레이트를 구현하고 String 값을 반환함을 명시한다. 
 */
 impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
-        let query = args[1].clone();
-        let file_path = args[2].clone();
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        args.next();
 
-        Ok(Config {query, file_path})
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file path"),
+        };
+
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
+
+        Ok(Config {
+            query,
+            file_path,
+            ignore_case,
+        })
     }
 }
 

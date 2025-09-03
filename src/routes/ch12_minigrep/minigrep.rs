@@ -5,15 +5,23 @@ use crate::config::{Config, run};
 /*
 어떤 인수에라도 유효하지 않은 유니코드가 들어있다면 std::env::args가 패닉을 일으킬수 있다.
 만약 프로그램이 유효하지 않은 유니코드를 포함하는 인수들을 받을 필요가 있다면 std::env::args_os를 대신 사용
+
+env::args 함수는 반복자를 반환한다. 반복자의 값들을 벡터로 모아서 Config::build에 슬라이스를 넘기는 대신 이번에는 env::args로부터 반환된 반복자의 소유권을 Config::build로 직접 전달한다.
 */
 pub fn minigrep() {
     //collect는 타입표기가 자주 필요한 함수 중 하나(러스트가 원하는 종류의 컬렉션을 추론할 수 없음)
-    let args: Vec<String> = env::args().collect();
+    /* 20250903 수정 : ch13 - 반복자 사용
+    //let args: Vec<String> = env::args().collect(); 
     //dbg!(&args);
 
     //Config::new에서 'new' 라는 함수는 절대 실패하지 않는다는 가정하에 사용 한다.
     let config = Config::build(&args).unwrap_or_else(|err| {
         eprintln!("Porblem parsing arguments: {err}");
+        process::exit(1);
+    });
+    */
+    let config = Config::build(env::args()).unwrap_or_else(|err| {
+        eprintln!("Problem parsing arguments : {err}");
         process::exit(1);
     });
 
