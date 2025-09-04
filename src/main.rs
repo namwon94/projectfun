@@ -3,7 +3,7 @@ use projectfun::routes::{
     arr, chg_f_c, control, closure, enums, fibonacci, fibonacci_memo, first_word, fun, 
     gen_largest, gen_largest_char, gen_largest_i32, gen_method_def, guessing, 
     hash_study, hashmaps, lifetime, matchs, minigrep, panic_result, pig_latin, 
-    rectangles, reference, scope, strings, var, vec_study, vecs
+    rectangles, reference, scope, strings, smart_pointer, var, vec_study, vecs
 };
 
 /*
@@ -89,6 +89,8 @@ fn main() {
         minigrep();
     }else if turning_p.len() > 1 && turning_p[1] == "closure" {
         closure();
+    }else if turning_p.len() > 1 && turning_p[1] == "smart_pointer" {
+        smart_pointer();
     }
 
 

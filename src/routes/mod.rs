@@ -8,6 +8,7 @@ mod ch9_panic_def;
 mod ch10_generic_def;
 mod ch12_minigrep;
 mod ch13_func_pro;
+mod ch15_smart_pointer;
 
 pub use ch2_guess::*;
 pub use ch3_general_def::*;
@@ -19,3 +20,4 @@ pub use ch9_panic_def::*;
 pub use ch10_generic_def::*;
 pub use ch12_minigrep::*;
 pub use ch13_func_pro::*;
+pub use ch15_smart_pointer::*;
