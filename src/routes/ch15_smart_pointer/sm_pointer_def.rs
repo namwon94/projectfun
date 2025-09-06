@@ -1,19 +1,21 @@
 use std::ops::Deref;
+use std::rc::Rc;
 
-/* 
-재귀적 타입을 사용할때 Box<T>를 사용
+//재귀적 타입을 사용할때 Box<T>를 사용
+#[allow(unused)] 
 enum List {
-    Cons(i32, Box<List>),
+    Cons(i32, Rc<List>),
     Nil,
 }
 
-use List::Cons;
-*/
+use List::{Cons, Nil};
+
 
 pub fn smart_pointer() {
-    let b = Box::new(5);
+    //Box<T> 및 Dref 트레이트 얘제
+    let bb = Box::new(5);
 
-    println!("b = {}", b);
+    println!("bb = {}", bb);
 
     //let list =  List::Cons(1, Box::new(List::Cons(2, Box::new(List::Cons(3, Box::new(List::Nil))))));
 
@@ -31,12 +33,28 @@ pub fn smart_pointer() {
     let m = MyBox::new(String::from("Rust"));
     //Deref 트레이트 구현으로 &String -> &str로 역참조 강제 변환을 하기 때문에 hello(&(*m)[..])으로 코드를 작성을 안해도 된다.
     hello(&m);
+
+    //Drop 트레이트 예제
+    drop_def();
+
+    //Rc<T> 예제
+    let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));
+    println!("count after creating a = {}", Rc::strong_count(&a));
+    let _b = Cons(3, Rc::clone(&a));
+    println!("count after creating b = {}", Rc::strong_count(&a));
+    {
+        let _c = Cons(4, Rc::clone(&a));
+        println!("count after creating c = {}", Rc::strong_count(&a));
+    }
+    //참조 카운트를 감소시키기 위해 어떤 함수를 호출할 필요는 없다. Rc<T>값이 스코프 밖으로 벗어나면 Drop 트레이트의 구현체가 자동으로 참조 카운트를 감소시킨다.
+    println!("count after c goes out of scope = {}", Rc::strong_count(&a));
 }
 
 fn hello(name: &str) {
     println!("Hello, {name}!");
 }
 
+//smart pointer : Box<T> 사용
 struct MyBox<T>(T);
 
 impl<T> MyBox<T> {
@@ -55,3 +73,37 @@ impl<T> Deref for MyBox<T> {
         &self.0
     }
 }
+
+struct CustomSmartPointer {
+    data: String,
+}
+
+/*
+Drop 트레이트는 프렐루드에 포함되어 있으므로, 이를 스코프로 가져올 필요는 없다.
+drop 함수의 본문에는 해당 타입의 인스턴스가 스코프 밖으로 벗어났을 때 실행시키고 싶은 어떠한 로직이라도 집어넣을 수 있다. 
+drop을 명시적으로 호출하는 것이 허용되지 않음
+    -> 러스트가 여전히 main의 끝부분에서 그 값에 대한 drop 호출을 자동으로 할 것이기 때문이다. 그래서 중복해제(double free) 에러가 될 수 있다. 
+    -> 어떤 값에 대한 메모리를 강제로 일찍 하기 원할 때는 std::mem::drop 함수를 이용한다. ->.  이 함수는 프렐루드에 포함되어 있다. Drop 트레이트에 있는 drop 메서드와는 다른 함수.
+*/
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer with data '{}'!", self.data);
+    }
+}
+
+fn drop_def() {
+    let _c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+    let _d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    };
+    let e = CustomSmartPointer {
+        data: String::from("some data"),
+    };
+    println!("CustomSmartPointers created.");
+    drop(e);
+    println!("CustomSmartPointer dropped befor the end of main.");
+}
+
+//smart pointer : Rc<T> 사용
