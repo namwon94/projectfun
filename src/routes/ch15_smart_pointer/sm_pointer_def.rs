@@ -1,5 +1,6 @@
 use std::ops::Deref;
-use std::rc::Rc;
+use std::rc::{Rc, Weak};
+use std::cell::RefCell;
 
 //재귀적 타입을 사용할때 Box<T>를 사용
 #[allow(unused)] 
@@ -48,6 +49,8 @@ pub fn smart_pointer() {
     }
     //참조 카운트를 감소시키기 위해 어떤 함수를 호출할 필요는 없다. Rc<T>값이 스코프 밖으로 벗어나면 Drop 트레이트의 구현체가 자동으로 참조 카운트를 감소시킨다.
     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
+
+    rc_change_weak();
 }
 
 fn hello(name: &str) {
@@ -106,4 +109,33 @@ fn drop_def() {
     println!("CustomSmartPointer dropped befor the end of main.");
 }
 
-//smart pointer : Rc<T> 사용
+//순환 참조 방지하기 : Rc<T> -> Weak<T> 변환
+//트리 데이터 구조 만들기 : 자식 노드를 가진 Node / 자식에서 부모로 가는 참조자 추가하기
+#[derive(Debug)]
+#[allow(unused)] 
+struct Node {
+    value: i32,
+    parent: RefCell<Weak<Node>>,
+    children: RefCell<Vec<Rc<Node>>>,
+}
+
+fn rc_change_weak() {
+    let leaf = Rc::new(Node {
+        value: 3,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![]),
+    });
+    println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
+    println!("leaf strong = {}, weak = {}", Rc::strong_count(&leaf), Rc::weak_count(&leaf));
+
+    let branch = Rc::new(Node {
+        value: 5,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![Rc::clone(&leaf)]),
+    });
+    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+    println!("branch strong = {}, weak = {}", Rc::strong_count(&branch), Rc::weak_count(&branch));
+    println!("leaf strong = {}, weak = {}", Rc::strong_count(&leaf), Rc::weak_count(&leaf));
+    println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
+    println!("leaf strong = {}, weak = {}", Rc::strong_count(&leaf), Rc::weak_count(&leaf));
+}
