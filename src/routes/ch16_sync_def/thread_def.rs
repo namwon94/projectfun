@@ -1,12 +1,13 @@
 use std::thread;
 use std::time::Duration;
-use std::sync::mpsc;
+use std::sync::{Mutex, mpsc, Arc};
+//use std::rc::Rc;
 
 /*
 생성된 스레드가 실행죄디 않거나, 전부 실행되지 않는 문제는 thread::spawn의 반환 값을 변수에 저장함으로써 해결할 수 있다. 반환타입은 JoinHandle이다. 
 JoinHandle : 자신의 join메서드를 호출 했을때 그 스레드가 끝날 때까지 기다리는 소유값 -> 핸들에 대한 스레드가 종료될 때까지 현재 실행 중인 스레드를 '블록'한다.
     -> 블록의 의미 : 그 스레드의 작업을 수행하거나 종료되는 것이 방지된다는 뜻
-    -> handle.join()의 호출 위치에 따라 스레드가 동시에 실행되느느지의 여부에 영향을 미친다. 
+    -> handle.join()의 호출 위치에 따라 스레드가 동시에 실행되는지의 여부에 영향을 미친다. 
 */
 pub fn spawn() {
     //스레드 예제
@@ -75,4 +76,40 @@ pub fn channel() {
     for received in rx {
         println!("Got : {}", received);
     }
+}
+
+/*
+Mutex<T>는 스마트 포인터이다. -> lock의 호출이 MutexGuard라느 스마트 포인터를 반환하는데 unwrap호출을 통해 처리되는 LockResult로 감싸져 있다.
+    -> MutextGuard는 Deref 와 Drop 구현체가 있다. -> 내부 가변성 제공 -> 데드락(deadlock)을 생성할 위험성이 있다.
+
+Rc<T>는 스레드를 교차하면서 공유하기에는 안전하지 않다. -> Arc<T>가 동시적 상황에서 안전하게 사용할 수 있는 Rc<T>와 같은 타입이다.
+
+*/
+pub fn mutex() {
+    let m = Mutex::new(5);
+    {
+        let mut num = m.lock().unwrap();
+        *num = 6;
+    }
+
+    println!("m = {:?}", m);
+
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Result : {}", *counter.lock().unwrap());
 }
