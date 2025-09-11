@@ -5,6 +5,24 @@ use projectfun::routes::{
     hash_study, hashmaps, lifetime, matchs, minigrep, mutex, panic_result, pig_latin, 
     rectangles, reference, scope, strings, smart_pointer, spawn, var, vec_study, vecs
 };
+/* oop.rs 예제
+use projectfun::oop::Draw;
+use projectfun::oop::{Button, Screen};
+
+
+struct SelectBox {
+    width: u32,
+    height: u32,
+    options: Vec<String>,
+}
+
+impl Draw for SelectBox {
+    fn draw(&self) {
+        //실제 선택 상자를 그리는 코드
+        println!("SelectBox drawn");
+    }
+}
+    */
 
 /*
 1. 화씨 온도와 섭씨 온도 간 변환하기 (clear)
@@ -102,6 +120,7 @@ fn main() {
 
 
 
+
     
     else if turning_p.len() > 1 && turning_p[1] == "chg_f_c" {
         chg_f_c();
@@ -194,6 +213,28 @@ fn main() {
             process::exit(1);
         }
     }
+    /*  oop.rs 예제
+    else if turning_p.len() > 1 && turning_p[1] == "oop" {
+        let screen = Screen {
+            components: vec![
+                Box::new(SelectBox {
+                    width: 75,
+                    height: 10,
+                    options: vec![
+                        String::from("Yes"),
+                        String::from("Maybe"),
+                        String::from("No"),
+                    ],
+                }),
+                Box::new(Button {
+                    width: 50,
+                    height: 10,
+                    label: String::from("Ok"),
+                }),
+            ],
+        };
+    }
+    */
     /*else if turning_p.len() > 1 && turning_p[1] == "struct_user" {
         user();
     }*/
