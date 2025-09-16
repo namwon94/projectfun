@@ -10,6 +10,7 @@ mod ch12_minigrep;
 mod ch13_func_pro;
 mod ch15_smart_pointer;
 mod ch16_sync_def;
+mod ch19_advance;
 
 pub use ch2_guess::*;
 pub use ch3_general_def::*;
@@ -23,3 +24,4 @@ pub use ch12_minigrep::*;
 pub use ch13_func_pro::*;
 pub use ch15_smart_pointer::*;
 pub use ch16_sync_def::*;
+pub use ch19_advance::*;
