@@ -37,3 +37,19 @@ pub fn unsafe_method(values: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32])
 /*
 extern 함수를 사용하면 외부 코드를 호출할 수 있다.
 */
+
+/*
+add 트레이트 예시
+use std::ops::Add;
+
+struct Millimeters(u32);
+struct Meters(u32);
+
+impl Add<Meters> for Millimeters {
+    type Output = Millimeters;
+
+    fn add(self, other: Meters) -> Millimeters {
+        Millimeters(self.0 + (other.0 * 1000))
+    }
+}
+*/

@@ -1,6 +1,6 @@
 use std::{io, process};
 use projectfun::routes::{
-    arr, channel, chg_f_c, closure, control, enums, fibonacci, fibonacci_memo, first_word, fun, gen_largest, gen_largest_char, gen_largest_i32, gen_method_def, guessing, hash_study, hashmaps, lifetime, matchs, minigrep, mutex, panic_result, pig_latin, raw_pointer, rectangles, reference, scope, smart_pointer, spawn, strings, unsafe_method, var, vec_study, vecs
+    arr, channel, chg_f_c, closure, control, enums, fibonacci, fibonacci_memo, first_word, fun, func, gen_largest, gen_largest_char, gen_largest_i32, gen_method_def, guessing, hash_study, hashmaps, lifetime, matchs, minigrep, mutex, panic_result, pig_latin, raw_pointer, rectangles, reference, scope, smart_pointer, spawn, strings, unsafe_method, var, vec_study, vecs
 };
 /* oop.rs 예제
 use projectfun::oop::Draw;
@@ -117,6 +117,8 @@ fn main() {
     }else if turning_p.len() > 1 && turning_p[1] == "unsafe_method" {
         let mut vector: Vec<i32> = vec![1, 2, 3, 4, 5, 6];
         let (_left, _right) = unsafe_method(&mut vector, 3);
+    }else if turning_p.len() > 1 && turning_p[1] == "func" {
+        func();
     }
 
 
